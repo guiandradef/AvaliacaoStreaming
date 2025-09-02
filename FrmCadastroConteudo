@@ -1,0 +1,98 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Threading;
+
+namespace AppSystem
+{
+    public partial class FrmCadastroConteudo : Form
+    {
+        Thread NTInicio;
+        Thread NTModeracao;
+        Thread NTPesquisa;
+        Thread NTLogin;
+        public FrmCadastroConteudo()
+        {
+            InitializeComponent();
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            NTInicio = new Thread(ReturnHome);
+            NTInicio.SetApartmentState(ApartmentState.STA);
+            NTInicio.Start();
+        }
+
+        private void ReturnHome()
+        {
+            Application.Run(new FrmPrincipal());
+        }
+
+        private void btnPesquisa_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            NTPesquisa = new Thread(PesquisarConteudo);
+            NTPesquisa.SetApartmentState(ApartmentState.STA);
+            NTPesquisa.Start();
+        }
+
+        private void PesquisarConteudo()
+        {
+            Application.Run(new FrmPesquisaConteudo());
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            NTLogin = new Thread(FormularioLogin);
+            NTLogin.SetApartmentState(ApartmentState.STA);
+            NTLogin.Start();
+        }
+
+        private void FormularioLogin()
+        {
+            Application.Run(new FrmLogin());
+        }
+
+        private void btnModeracao_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            NTModeracao = new Thread(FormularioModeracao);
+            NTModeracao.SetApartmentState(ApartmentState.STA);
+            NTModeracao.Start();
+        }
+
+        private void FormularioModeracao()
+        {
+            Application.Run(new FrmModeracao());
+        }
+
+        private void btnCadastrar_Click(object sender, EventArgs e)
+        {
+            if(TxTTipo.Text == "Filme" || TxTTipo.Text == "Serie" || TxTTipo.Text == "Animação")
+            {
+                MessageBox.Show("Cadastro de Conteudo Realizado com Sucesso");
+            }
+            else
+            {
+                MessageBox.Show("O Tipo Está Invalido, Tipos Aceitaveis ( Filmes, Serie ou Animação");
+            }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            TxTTitulo.Text = "";
+            TxTGenero.Text = "";
+            TxTAno.Text = "";
+            TxTTipo.Text = "";
+            TxTSinopse.Text = "";
+        }
+    }
+}
